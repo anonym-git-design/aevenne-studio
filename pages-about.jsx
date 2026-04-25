@@ -1,6 +1,7 @@
 // pages-about.jsx
 
 function AboutPage({ lang, setRoute }) {
+  const isMobile = useIsMobile();
   const values = t(lang, 'about.values');
   return (
     <div className="route">
@@ -20,7 +21,7 @@ function AboutPage({ lang, setRoute }) {
       </section>
 
       <section style={{ padding: '80px 0' }}>
-        <div className="container" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80 }}>
+        <div className="container" style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? 40 : 80 }}>
           <Reveal>
             <Ph variant="warm" label="Inesse — lead photographer" ratio="4/5" />
             <div style={{ marginTop: 32, display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--hairline)', paddingBottom: 14 }}>
@@ -51,7 +52,7 @@ function AboutPage({ lang, setRoute }) {
           <Reveal>
             <div className="eyebrow" style={{ textAlign: 'center', marginBottom: 60 }}>— {t(lang, 'about.values_eyebrow')} —</div>
           </Reveal>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 40 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(4, 1fr)', gap: isMobile ? 24 : 40 }}>
             {values.map((v, i) => (
               <Reveal key={i} delay={i * 100}>
                 <div style={{ borderTop: '1px solid var(--hairline)', paddingTop: 24 }}>

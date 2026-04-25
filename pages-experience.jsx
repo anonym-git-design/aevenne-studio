@@ -1,6 +1,7 @@
 // pages-experience.jsx
 
 function ExperiencePage({ lang, setRoute }) {
+  const isMobile = useIsMobile();
   const steps = t(lang, 'experience.steps');
   return (
     <div className="route">
@@ -25,9 +26,9 @@ function ExperiencePage({ lang, setRoute }) {
             <Reveal key={i}>
               <div style={{
                 display: 'grid',
-                gridTemplateColumns: '100px 1fr 1fr',
-                gap: 60,
-                padding: '52px 0',
+                gridTemplateColumns: isMobile ? '1fr' : '100px 1fr 1fr',
+                gap: isMobile ? 16 : 60,
+                padding: isMobile ? '36px 0' : '52px 0',
                 borderTop: '1px solid var(--hairline)',
                 alignItems: 'start',
               }}>
@@ -46,7 +47,7 @@ function ExperiencePage({ lang, setRoute }) {
       </section>
 
       <section style={{ padding: '140px 0', background: 'var(--ink)', color: 'var(--ivory)' }}>
-        <div className="container" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
+        <div className="container" style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? 40 : 80, alignItems: 'center' }}>
           <Reveal>
             <Ph variant="dark" label="album — hand-bound, linen" note="Keepsake" ratio="4/5" />
           </Reveal>

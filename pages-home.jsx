@@ -70,16 +70,17 @@ function HeroFullBleed({ lang, setRoute }) {
 }
 
 function HeroSplit({ lang, setRoute }) {
+  const isMobile = useIsMobile();
   return (
     <section style={{
       position: 'relative',
       minHeight: '100vh',
-      paddingTop: 140,
+      paddingTop: isMobile ? 100 : 140,
       paddingBottom: 80,
       display: 'flex',
       alignItems: 'center',
     }}>
-      <div className="container" style={{ display: 'grid', gridTemplateColumns: '1fr 1.1fr', gap: 80, width: '100%', alignItems: 'center' }}>
+      <div className="container" style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1.1fr', gap: isMobile ? 48 : 80, width: '100%', alignItems: 'center' }}>
         <div>
           <div className="eyebrow" style={{ marginBottom: 42 }}>{t(lang, 'home.eyebrow')}</div>
           <h1 className="display" style={{
@@ -183,9 +184,10 @@ function HeroSequence({ lang, setRoute }) {
 }
 
 function HomeIntro({ lang }) {
+  const isMobile = useIsMobile();
   return (
-    <section style={{ padding: '140px 0' }}>
-      <div className="container" style={{ display: 'grid', gridTemplateColumns: '1fr 1.3fr', gap: 100, alignItems: 'center' }}>
+    <section style={{ padding: isMobile ? '80px 0' : '140px 0' }}>
+      <div className="container" style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1.3fr', gap: isMobile ? 40 : 100, alignItems: 'center' }}>
         <Reveal>
           <Ph variant="warm" label="Inesse & Aymen — studio portrait" note="About image" ratio="4/5" />
         </Reveal>
@@ -248,6 +250,7 @@ function HomeServices({ lang, setRoute }) {
 }
 
 function HomeFeatured({ lang, setRoute }) {
+  const isMobile = useIsMobile();
   const stories = [
     { t1: 'Héloïse & Maxime', sub: 'Château de Villandry · Loire · Juin 2026', variant: 'warm' },
     { t1: 'Amélia & Thomas', sub: 'Cap d\u2019Antibes · Côte d\u2019Azur · Septembre 2025', variant: 'dark' },
@@ -269,12 +272,12 @@ function HomeFeatured({ lang, setRoute }) {
           <Reveal key={i}>
             <div style={{
               display: 'grid',
-              gridTemplateColumns: i % 2 === 0 ? '1.4fr 1fr' : '1fr 1.4fr',
-              gap: 56,
-              marginBottom: 100,
+              gridTemplateColumns: isMobile ? '1fr' : (i % 2 === 0 ? '1.4fr 1fr' : '1fr 1.4fr'),
+              gap: isMobile ? 24 : 56,
+              marginBottom: isMobile ? 56 : 100,
               alignItems: 'center',
             }}>
-              <Ph variant={s.variant} label={s.t1} note="wedding editorial" ratio="4/5" style={{ order: i % 2 === 0 ? 0 : 1 }} />
+              <Ph variant={s.variant} label={s.t1} note="wedding editorial" ratio="4/5" style={{ order: isMobile ? 0 : (i % 2 === 0 ? 0 : 1) }} />
               <div style={{ padding: '0 20px' }}>
                 <div className="count" style={{ marginBottom: 18 }}>— 0{i + 1}</div>
                 <h3 className="display" style={{ fontSize: 'clamp(32px, 3.4vw, 46px)', lineHeight: 1.05, marginBottom: 20 }}>

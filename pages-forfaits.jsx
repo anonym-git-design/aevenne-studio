@@ -107,6 +107,7 @@ const LIFESTYLE_PACKAGES_EN = [
 ];
 
 function ForfaitsPage({ lang, setRoute }) {
+  const isMobile = useIsMobile();
   const weddings = lang === 'fr' ? WEDDING_PACKAGES_FR : WEDDING_PACKAGES_EN;
   const lifestyle = lang === 'fr' ? LIFESTYLE_PACKAGES_FR : LIFESTYLE_PACKAGES_EN;
   const cur = t(lang, 'forfaits.currency');
@@ -133,7 +134,7 @@ function ForfaitsPage({ lang, setRoute }) {
           <Reveal>
             <div className="eyebrow" style={{ textAlign: 'center', marginBottom: 60 }}>— {t(lang, 'forfaits.wedding_h')} —</div>
           </Reveal>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 32, alignItems: 'stretch' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: 32, alignItems: 'stretch' }}>
             {weddings.map((p, i) => (
               <Reveal key={i} delay={i * 120}>
                 <div style={{
@@ -200,7 +201,7 @@ function ForfaitsPage({ lang, setRoute }) {
           <Reveal>
             <div className="eyebrow" style={{ textAlign: 'center', marginBottom: 60 }}>— {t(lang, 'forfaits.lifestyle_h')} —</div>
           </Reveal>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 0, borderTop: '1px solid var(--hairline)', borderBottom: '1px solid var(--hairline)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(4, 1fr)', gap: 0, borderTop: '1px solid var(--hairline)', borderBottom: '1px solid var(--hairline)' }}>
             {lifestyle.map((p, i) => (
               <Reveal key={i} delay={i * 90}>
                 <div style={{

@@ -23,14 +23,15 @@ const SERVICE_DETAILS_EN = {
 };
 
 function ServiceRow({ lang, k, variant, idx }) {
+  const isMobile = useIsMobile();
   const details = (lang === 'fr' ? SERVICE_DETAILS_FR : SERVICE_DETAILS_EN)[k];
   return (
     <Reveal>
       <div style={{
         display: 'grid',
-        gridTemplateColumns: idx % 2 === 0 ? '1.3fr 1fr' : '1fr 1.3fr',
-        gap: 64,
-        padding: '64px 0',
+        gridTemplateColumns: isMobile ? '1fr' : (idx % 2 === 0 ? '1.3fr 1fr' : '1fr 1.3fr'),
+        gap: isMobile ? 32 : 64,
+        padding: isMobile ? '40px 0' : '64px 0',
         borderTop: '1px solid var(--hairline)',
         alignItems: 'center',
       }}>
@@ -43,7 +44,7 @@ function ServiceRow({ lang, k, variant, idx }) {
           <p className="serif-italic" style={{ fontSize: 18, color: 'var(--taupe-2)', lineHeight: 1.55, marginBottom: 36, maxWidth: 520 }}>
             {t(lang, 'serviceDesc.' + k)}
           </p>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? 24 : 40 }}>
             <div>
               <div className="eyebrow" style={{ marginBottom: 14 }}>{t(lang, 'servicesPage.included')}</div>
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 8 }}>

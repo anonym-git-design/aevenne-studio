@@ -1,6 +1,7 @@
 // pages-contact.jsx — validated inquiry form
 
 function ContactPage({ lang }) {
+  const isMobile = useIsMobile();
   const [form, setForm] = React.useState({
     name: '', email: '', type: '', date: '', location: '', message: '',
   });
@@ -75,7 +76,7 @@ function ContactPage({ lang }) {
       </section>
 
       <section style={{ padding: '60px 0 160px' }}>
-        <div className="container" style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr', gap: 96 }}>
+        <div className="container" style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1.6fr 1fr', gap: isMobile ? 48 : 96 }}>
           <Reveal>
             {status === 'success' ? (
               <div style={{ padding: '60px 40px', border: '1px solid var(--hairline)', textAlign: 'center' }}>
@@ -92,7 +93,7 @@ function ContactPage({ lang }) {
               </div>
             ) : (
               <form onSubmit={onSubmit} noValidate>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px 40px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? '24px' : '32px 40px' }}>
                   <Field label={t(lang, 'contact.form.name')} error={errors.name}>
                     <input type="text" value={form.name} onChange={update('name')} className="aven-input" />
                   </Field>
@@ -108,14 +109,14 @@ function ContactPage({ lang }) {
                   <Field label={t(lang, 'contact.form.date')} error={errors.date}>
                     <input type="date" value={form.date} onChange={update('date')} className="aven-input" />
                   </Field>
-                  <div style={{ gridColumn: 'span 2' }}>
+                  <div style={{ gridColumn: isMobile ? 'span 1' : 'span 2' }}>
                     <Field label={t(lang, 'contact.form.location')} error={errors.location}>
                       <input type="text" value={form.location} onChange={update('location')}
                         placeholder={lang === 'fr' ? 'Lieu de la cérémonie, ville, ou région' : 'Venue, city, or region'}
                         className="aven-input" />
                     </Field>
                   </div>
-                  <div style={{ gridColumn: 'span 2' }}>
+                  <div style={{ gridColumn: isMobile ? 'span 1' : 'span 2' }}>
                     <Field label={t(lang, 'contact.form.message')} error={errors.message} hint={t(lang, 'contact.form.message_hint')}>
                       <textarea rows={6} value={form.message} onChange={update('message')} className="aven-input" />
                     </Field>

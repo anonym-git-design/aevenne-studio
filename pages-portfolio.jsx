@@ -70,6 +70,7 @@ function Lightbox({ img, index, total, onClose, onPrev, onNext, lang }) {
 }
 
 function PortfolioPage({ lang, gridLayout }) {
+  const isMobile = useIsMobile();
   const [cat, setCat] = React.useState('all');
   const [lightbox, setLightbox] = React.useState(null);
 
@@ -120,7 +121,7 @@ function PortfolioPage({ lang, gridLayout }) {
       <section style={{ padding: '20px 0 100px' }}>
         <div className="container">
           {masonry ? (
-            <div style={{ columnCount: 3, columnGap: 18 }}>
+            <div style={{ columnCount: isMobile ? 1 : 3, columnGap: 18 }}>
               {filtered.map((img, i) => {
                 const ratios = ['3/4', '4/5', '1/1', '3/5', '5/6', '4/3'];
                 const r = ratios[i % ratios.length];

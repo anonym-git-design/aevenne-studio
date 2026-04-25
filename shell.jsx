@@ -1,5 +1,17 @@
 // shell.jsx — nav, footer, placeholder helpers, logo, language switcher
 
+// Responsive breakpoint hook — exposed on window for all pages
+function useIsMobile(bp) {
+  var breakpoint = bp || 768;
+  const [m, setM] = React.useState(() => window.innerWidth < breakpoint);
+  React.useEffect(() => {
+    const check = () => setM(window.innerWidth < breakpoint);
+    window.addEventListener('resize', check, { passive: true });
+    return () => window.removeEventListener('resize', check);
+  }, [breakpoint]);
+  return m;
+}
+
 // Logo wordmark
 function Logo({ onClick, sub }) {
   return (
@@ -30,6 +42,8 @@ function LangSwitch({ lang, onChange }) {
 
 function Nav({ lang, setLang, route, setRoute, heroDark }) {
   const [scrolled, setScrolled] = React.useState(false);
+  const [menuOpen, setMenuOpen] = React.useState(false);
+
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     onScroll();
@@ -37,44 +51,71 @@ function Nav({ lang, setLang, route, setRoute, heroDark }) {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Reset scroll on route change — and recompute scrolled state
   React.useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
     setScrolled(false);
+    setMenuOpen(false);
   }, [route]);
 
-  const cls = 'nav' + (scrolled ? ' scrolled' : '') + (heroDark ? ' hero-dark' : '');
-  const go = (r) => (e) => {e.preventDefault();setRoute(r);};
+  React.useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [menuOpen]);
+
+  const cls = 'nav' + (scrolled ? ' scrolled' : '') + (heroDark && !menuOpen ? ' hero-dark' : '');
+  const go = (r) => (e) => { e.preventDefault(); setRoute(r); setMenuOpen(false); };
 
   const leftLinks = ['about', 'portfolio', 'experience', 'services'];
   const rightLinks = ['forfaits', 'journal', 'contact'];
+  const allLinks = [...leftLinks, ...rightLinks];
 
   return (
-    <nav className={cls} data-screen-label="Navigation">
-      <div className="nav-left">
-        {leftLinks.map((k) =>
-        <a key={k} href="#"
-        className={'nav-link' + (route === k ? ' active' : '')}
-        onClick={go(k)}>
-            {t(lang, 'nav.' + k)}
-          </a>
-        )}
-      </div>
-      <a href="#" onClick={go('home')} style={{ display: 'block' }}>
-        <Logo sub={t(lang, 'logo.sub')} />
-      </a>
-      <div className="nav-right">
-        {rightLinks.map((k) =>
-        <a key={k} href="#"
-        className={'nav-link' + (route === k ? ' active' : '')}
-        onClick={go(k)}>
-            {t(lang, 'nav.' + k)}
-          </a>
-        )}
-        <LangSwitch lang={lang} onChange={setLang} />
-      </div>
-    </nav>);
+    <>
+      <nav className={cls} data-screen-label="Navigation">
+        <div className="nav-left">
+          {leftLinks.map((k) =>
+            <a key={k} href="#"
+              className={'nav-link' + (route === k ? ' active' : '')}
+              onClick={go(k)}>
+              {t(lang, 'nav.' + k)}
+            </a>
+          )}
+        </div>
+        <a href="#" onClick={go('home')} style={{ display: 'block' }}>
+          <Logo sub={t(lang, 'logo.sub')} />
+        </a>
+        <div className="nav-right">
+          {rightLinks.map((k) =>
+            <a key={k} href="#"
+              className={'nav-link nav-desktop-link' + (route === k ? ' active' : '')}
+              onClick={go(k)}>
+              {t(lang, 'nav.' + k)}
+            </a>
+          )}
+          <LangSwitch lang={lang} onChange={setLang} />
+          <button
+            className={'nav-hamburger' + (menuOpen ? ' open' : '')}
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Menu">
+            <span /><span /><span />
+          </button>
+        </div>
+      </nav>
 
+      {menuOpen && (
+        <div className="mobile-menu">
+          {allLinks.map((k) =>
+            <a key={k} href="#"
+              className={'mobile-menu-link' + (route === k ? ' active' : '')}
+              onClick={go(k)}>
+              {t(lang, 'nav.' + k)}
+            </a>
+          )}
+          <LangSwitch lang={lang} onChange={setLang} />
+        </div>
+      )}
+    </>
+  );
 }
 
 // Striped placeholder — used everywhere instead of real imagery
@@ -119,12 +160,13 @@ function Reveal({ children, delay = 0, as: Tag = 'div', style, className = '' })
 
 // Footer
 function Footer({ lang, setRoute }) {
+  const isMobile = useIsMobile();
   const go = (r) => (e) => {e.preventDefault();setRoute(r);};
 
   return (
     <footer className="footer" style={{ backgroundColor: "rgb(46, 33, 11)" }}>
-      <div className="container" style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr 1fr 1.2fr', gap: 48, paddingBottom: 72 }}>
-        <div>
+      <div className="container" style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : '1.4fr 1fr 1fr 1.2fr', gap: isMobile ? '40px 24px' : 48, paddingBottom: 72 }}>
+        <div style={{ gridColumn: isMobile ? 'span 2' : 'span 1' }}>
           <div style={{ fontFamily: 'var(--f-display)', fontSize: 32, letterSpacing: '0.14em', marginBottom: 14 }}>AEVENNE</div>
           <div style={{ fontFamily: 'var(--f-serif)', fontStyle: 'italic', fontSize: 17, color: 'var(--taupe-2)', lineHeight: 1.6, maxWidth: 280 }}>
             {t(lang, 'footer.tagline')}
@@ -216,4 +258,4 @@ function SectionHeader({ eyebrow, title, lede, align = 'left', count }) {
 
 }
 
-Object.assign(window, { Nav, Footer, Logo, LangSwitch, Ph, Reveal, SectionHeader });
+Object.assign(window, { Nav, Footer, Logo, LangSwitch, Ph, Reveal, SectionHeader, useIsMobile });
