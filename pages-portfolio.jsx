@@ -95,15 +95,15 @@ function PortfolioPage({ lang, gridLayout }) {
 
       <section style={{ padding: '40px 0 60px' }}>
         <div className="container">
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, borderTop: '1px solid var(--hairline)', borderBottom: '1px solid var(--hairline)', padding: '20px 0', justifyContent: 'center' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, borderTop: '1px solid var(--hairline)', borderBottom: '1px solid var(--hairline)', padding: '16px 0', justifyContent: 'center', rowGap: 6 }}>
             {cats.map((c) => (
               <button
                 key={c}
                 onClick={() => setCat(c)}
                 style={{
-                  padding: '10px 20px',
+                  padding: isMobile ? '8px 12px' : '10px 20px',
                   fontSize: 11,
-                  letterSpacing: '0.3em',
+                  letterSpacing: isMobile ? '0.12em' : '0.3em',
                   textTransform: 'uppercase',
                   fontWeight: 300,
                   color: cat === c ? 'var(--espresso)' : 'var(--taupe)',
@@ -139,14 +139,17 @@ function PortfolioPage({ lang, gridLayout }) {
           ) : (
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(6, 1fr)',
-              gridAutoRows: '180px',
-              gap: 16,
+              gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(6, 1fr)',
+              gridAutoRows: isMobile ? '140px' : '180px',
+              gap: isMobile ? 8 : 16,
             }}>
               {filtered.map((img, i) => {
-                let span = { gridColumn: 'span 2', gridRow: 'span 2' };
-                if (img.span === 'wide') span = { gridColumn: 'span 4', gridRow: 'span 2' };
-                if (img.span === 'tall') span = { gridColumn: 'span 2', gridRow: 'span 3' };
+                let span = {};
+                if (!isMobile) {
+                  span = { gridColumn: 'span 2', gridRow: 'span 2' };
+                  if (img.span === 'wide') span = { gridColumn: 'span 4', gridRow: 'span 2' };
+                  if (img.span === 'tall') span = { gridColumn: 'span 2', gridRow: 'span 3' };
+                }
                 return (
                   <div key={i} onClick={() => setLightbox(i)} style={{ ...span, cursor: 'pointer' }}>
                     <Ph variant={img.variant} label={img.label} style={{ width: '100%', height: '100%' }} />

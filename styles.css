@@ -39,7 +39,7 @@ html, body {
   text-rendering: optimizeLegibility;
 }
 
-body { overflow-x: hidden; }
+html, body { overflow-x: hidden; }
 
 img { display: block; max-width: 100%; }
 
@@ -443,33 +443,72 @@ section { position: relative; }
 .nav-hamburger.open span:nth-child(2) { opacity: 0; }
 .nav-hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
-/* ── Mobile full-screen menu ────────────────────────────────────────── */
-.mobile-menu {
+/* ── Side drawer backdrop ───────────────────────────────────────────── */
+.drawer-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 99;
+  z-index: 98;
+  background: rgba(45, 36, 28, 0.4);
+  animation: backdropIn 0.3s ease;
+}
+@keyframes backdropIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Side drawer panel ──────────────────────────────────────────────── */
+.side-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  width: min(300px, 82vw);
   background: var(--ivory);
+  box-shadow: -8px 0 48px rgba(45, 36, 28, 0.14);
+  transform: translateX(100%);
+  transition: transform 0.4s var(--ease);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 28px;
-  animation: menuIn 0.3s var(--ease);
+  padding: 28px 36px 48px;
+  overflow-y: auto;
 }
-@keyframes menuIn {
-  from { opacity: 0; transform: translateY(-8px); }
-  to   { opacity: 1; transform: translateY(0); }
+.side-drawer.open { transform: translateX(0); }
+
+.drawer-close {
+  align-self: flex-end;
+  font-size: 18px;
+  color: var(--taupe-2);
+  transition: color 0.3s;
+  padding: 4px;
+  margin-bottom: 36px;
 }
-.mobile-menu-link {
+.drawer-close:hover { color: var(--espresso); }
+
+.drawer-wordmark {
   font-family: var(--f-display);
-  font-size: clamp(26px, 7vw, 40px);
-  letter-spacing: 0.1em;
+  font-size: 26px;
+  letter-spacing: 0.16em;
   color: var(--espresso);
-  opacity: 0.45;
+  margin-bottom: 48px;
+}
+
+.drawer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.drawer-link {
+  font-family: var(--f-display);
+  font-size: 28px;
+  letter-spacing: 0.08em;
+  color: var(--espresso);
+  opacity: 0.35;
   transition: opacity 0.3s;
 }
-.mobile-menu-link:hover,
-.mobile-menu-link.active { opacity: 1; }
+.drawer-link:hover,
+.drawer-link.active { opacity: 1; }
 
 /* Focus states (accessible but subtle) */
 :focus-visible {
