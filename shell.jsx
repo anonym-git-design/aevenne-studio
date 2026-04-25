@@ -102,22 +102,17 @@ function Nav({ lang, setLang, route, setRoute, heroDark }) {
         </div>
       </nav>
 
-      {menuOpen && (
-        <div className="drawer-backdrop" onClick={() => setMenuOpen(false)} />
-      )}
-      <div className={'side-drawer' + (menuOpen ? ' open' : '')}>
-        <button className="drawer-close" onClick={() => setMenuOpen(false)} aria-label="Fermer">✕</button>
-        <div className="drawer-wordmark">AEVENNE</div>
-        <nav className="drawer-links">
+      <div className={'mobile-dropdown' + (menuOpen ? ' open' : '')}>
+        <nav>
           {allLinks.map((k) =>
             <a key={k} href="#"
-              className={'drawer-link' + (route === k ? ' active' : '')}
+              className={'dropdown-link' + (route === k ? ' active' : '')}
               onClick={go(k)}>
               {t(lang, 'nav.' + k)}
             </a>
           )}
         </nav>
-        <div style={{ marginTop: 'auto', paddingTop: 40 }}>
+        <div className="dropdown-lang">
           <LangSwitch lang={lang} onChange={setLang} />
         </div>
       </div>
