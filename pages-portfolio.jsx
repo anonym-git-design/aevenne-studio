@@ -121,7 +121,16 @@ function PortfolioPage({ lang, gridLayout }) {
       <section style={{ padding: '20px 0 100px' }}>
         <div className="container">
           {masonry ? (
-            <div style={{ columnCount: isMobile ? 1 : 3, columnGap: 18 }}>
+            isMobile ? (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: '100%' }}>
+                {filtered.map((img, i) => (
+                  <div key={i} onClick={() => setLightbox(i)} style={{ cursor: 'pointer', width: '100%' }}>
+                    <Ph variant={img.variant} label={img.label} ratio="4/5" style={{ width: '100%' }} />
+                  </div>
+                ))}
+              </div>
+            ) : (
+            <div style={{ columnCount: 3, columnGap: 18 }}>
               {filtered.map((img, i) => {
                 const ratios = ['3/4', '4/5', '1/1', '3/5', '5/6', '4/3'];
                 const r = ratios[i % ratios.length];
@@ -136,6 +145,7 @@ function PortfolioPage({ lang, gridLayout }) {
                 );
               })}
             </div>
+            )
           ) : (
             <div style={{
               display: 'grid',

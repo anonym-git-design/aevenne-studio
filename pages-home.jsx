@@ -102,9 +102,9 @@ function HeroSplit({ lang, setRoute }) {
             {t(lang, 'home.cta')} <span className="arrow" />
           </button>
         </div>
-        <div style={{ position: 'relative', paddingRight: 40 }}>
+        <div style={{ position: 'relative', paddingRight: isMobile ? 0 : 40 }}>
           <Ph variant="warm" label="editorial portrait — couple, vineyard" note="Primary hero" ratio="3/4" />
-          <div style={{ position: 'absolute', right: -10, bottom: -60, width: '45%', aspectRatio: '3/4' }}>
+          <div style={{ position: 'absolute', right: -10, bottom: -60, width: '45%', aspectRatio: '3/4', display: isMobile ? 'none' : 'block' }}>
             <Ph label="bride — hand & bouquet" note="Detail shot" style={{ width: '100%', height: '100%' }} />
           </div>
         </div>
